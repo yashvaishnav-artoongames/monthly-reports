@@ -319,9 +319,15 @@ async function initPasswordSystem(){
       await setStoredRecoveryHash(await hashPassword(rk));
       pwUnlocked=true;
       overlay.classList.add('hidden');
-      document.getElementById('MP').style.display='';
+      document.getElementById('MP').style.display='none';
       btn.disabled=false;
       showRecoveryKeyModal(rk);
+      var doneCheck=setInterval(function(){
+        if(!document.getElementById('cmodalOverlay').classList.contains('show')){
+          clearInterval(doneCheck);
+          document.getElementById('MP').style.display='';
+        }
+      },200);
     };
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
   } else {
@@ -383,6 +389,7 @@ function showRecoveryKeyModal(key){
   btns.appendChild(copyBtn);
   var doneBtn=document.createElement('button');doneBtn.className='cmodal-btn cancel';doneBtn.textContent='I saved it';doneBtn.onclick=closeModal;
   btns.appendChild(doneBtn);
+  overlay.setAttribute('data-critical','true');
   overlay.classList.add('show');
 }
 
@@ -467,7 +474,7 @@ function setupPasswordChange(){
         var newRk=generateRecoveryKey();
         await setStoredRecoveryHash(await hashPassword(newRk));
         closeModal();
-        showRecoveryKeyModal(newRk);
+        setTimeout(function(){showRecoveryKeyModal(newRk);},300);
         showToast('Password changed!');
       };
       btns.appendChild(save);
@@ -481,8 +488,8 @@ initPasswordSystem();
 
 /* ═══ MAIN APP ═══ */
 function showModal(o){document.getElementById('cmodalIcon').textContent=o.icon||'';document.getElementById('cmodalTitle').textContent=o.title||'';document.getElementById('cmodalMsg').textContent=o.msg||'';var b=document.getElementById('cmodalBtns');b.innerHTML='';var c=document.createElement('button');c.className='cmodal-btn cancel';c.textContent='Cancel';c.onclick=function(){closeModal();};b.appendChild(c);var ok=document.createElement('button');ok.className='cmodal-btn '+(o.btnClass||'confirm');ok.textContent=o.okText||'OK';ok.onclick=function(){closeModal();if(o.onOk)o.onOk();};b.appendChild(ok);document.getElementById('cmodalOverlay').classList.add('show');}
-function closeModal(){document.getElementById('cmodalOverlay').classList.remove('show');}
-document.getElementById('cmodalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function closeModal(){var ov=document.getElementById('cmodalOverlay');ov.classList.remove('show');ov.removeAttribute('data-critical');}
+document.getElementById('cmodalOverlay').addEventListener('click',function(e){if(e.target===this&&!this.getAttribute('data-critical'))closeModal();});
 
 var FIREBASE_URL='https://monthly-reports-database-default-rtdb.asia-southeast1.firebasedatabase.app';
 var store={
