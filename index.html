@@ -315,13 +315,17 @@ async function initPasswordSystem(){
       btn.disabled=true;btn.textContent='Setting up…';
       var hash=await hashPassword(pw);
       await setStoredHash(hash);
+      var rk=generateRecoveryKey();
+      await setStoredRecoveryHash(await hashPassword(rk));
       pwUnlocked=true;
       overlay.classList.add('hidden');
       document.getElementById('MP').style.display='';
       btn.disabled=false;
+      showRecoveryKeyModal(rk);
     };
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
   } else {
+    document.getElementById('lockHint').innerHTML='Forgot password? <a href="#" id="forgotLink" style="color:#3b5bdb;font-weight:700;text-decoration:none;">Reset with recovery key</a>';
     btn.onclick=async function(){
       var pw=inp.value;
       if(!pw){inp.focus();return;}
@@ -339,10 +343,102 @@ async function initPasswordSystem(){
       btn.disabled=false;btn.textContent='Unlock';
     };
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();err.textContent='';});
+    setTimeout(function(){
+      var fl=document.getElementById('forgotLink');
+      if(fl)fl.addEventListener('click',function(e){e.preventDefault();showRecoveryResetUI();});
+    },50);
   }
 
   document.getElementById('MP').style.display='none';
   inp.focus();
+}
+
+function generateRecoveryKey(){
+  var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var key='';
+  for(var i=0;i<16;i++){if(i>0&&i%4===0)key+='-';key+=chars.charAt(Math.floor(Math.random()*chars.length));}
+  return key;
+}
+
+async function getStoredRecoveryHash(){
+  var FBURL='https://monthly-reports-database-default-rtdb.asia-southeast1.firebasedatabase.app';
+  try{var r=await fetch(FBURL+'/ua/'+encodeURIComponent('ua-recovery-hash')+'.json');if(r.ok){var d=await r.json();if(d)return typeof d==='string'?d:null;}}catch(e){}
+  return null;
+}
+
+async function setStoredRecoveryHash(hash){
+  var FBURL='https://monthly-reports-database-default-rtdb.asia-southeast1.firebasedatabase.app';
+  try{await fetch(FBURL+'/ua/'+encodeURIComponent('ua-recovery-hash')+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(hash)});}catch(e){console.log('Recovery store error:',e);}
+}
+
+function showRecoveryKeyModal(key){
+  var overlay=document.getElementById('cmodalOverlay');
+  document.getElementById('cmodalIcon').textContent='🔑';
+  document.getElementById('cmodalTitle').textContent='Save Your Recovery Key';
+  document.getElementById('cmodalMsg').innerHTML='<div style="text-align:center;line-height:2;"><div style="font-size:11px;color:#dc2626;font-weight:700;margin-bottom:10px;">⚠ SAVE THIS KEY NOW — it will never be shown again!</div><div style="background:#f8f9fc;border:2px dashed #3b5bdb;border-radius:10px;padding:14px;margin:10px 0;"><span id="rkDisplay" style="font-size:18px;font-weight:800;letter-spacing:2px;color:#3b5bdb;font-family:monospace;">'+key+'</span></div><div style="font-size:10px;color:#6b7280;">Use this key to reset your password if you forget it.<br>Write it down or save it somewhere safe.</div></div>';
+  var btns=document.getElementById('cmodalBtns');
+  btns.innerHTML='';
+  var copyBtn=document.createElement('button');copyBtn.className='cmodal-btn confirm';copyBtn.textContent='📋 Copy Key';
+  copyBtn.onclick=function(){try{navigator.clipboard.writeText(key);copyBtn.textContent='✅ Copied!';setTimeout(function(){copyBtn.textContent='📋 Copy Key';},2000);}catch(e){var ta=document.createElement('textarea');ta.value=key;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);copyBtn.textContent='✅ Copied!';}};
+  btns.appendChild(copyBtn);
+  var doneBtn=document.createElement('button');doneBtn.className='cmodal-btn cancel';doneBtn.textContent='I saved it';doneBtn.onclick=closeModal;
+  btns.appendChild(doneBtn);
+  overlay.classList.add('show');
+}
+
+function showRecoveryResetUI(){
+  var overlay=document.getElementById('lockOverlay');
+  var card=overlay.querySelector('.lock-card');
+  document.getElementById('lockIcon').textContent='🔑';
+  document.getElementById('lockTitle').textContent='Reset Password';
+  document.getElementById('lockSub').innerHTML='Enter your recovery key and set a new password.';
+  document.getElementById('lockError').textContent='';
+  document.getElementById('lockHint').innerHTML='<a href="#" id="backToLogin" style="color:#3b5bdb;font-weight:700;text-decoration:none;">← Back to login</a>';
+  var inp=document.getElementById('lockInput');
+  inp.value='';inp.placeholder='XXXX-XXXX-XXXX-XXXX';inp.type='text';inp.style.letterSpacing='3px';inp.style.textTransform='uppercase';
+  var newPwInput=document.createElement('input');
+  newPwInput.type='password';newPwInput.className='lock-input';newPwInput.id='lockNewPw';newPwInput.placeholder='New password (min 4 chars)';newPwInput.style.marginTop='10px';newPwInput.style.letterSpacing='2px';
+  inp.parentNode.insertBefore(newPwInput,document.getElementById('lockError'));
+  var btn=document.getElementById('lockBtn');
+  btn.textContent='Reset Password';
+  btn.onclick=async function(){
+    var rk=inp.value.trim().toUpperCase();
+    var newPw=document.getElementById('lockNewPw').value;
+    var err=document.getElementById('lockError');
+    if(!rk){err.textContent='Enter your recovery key';inp.classList.add('error');setTimeout(function(){inp.classList.remove('error');},500);return;}
+    if(!newPw||newPw.length<4){err.textContent='New password must be at least 4 characters';return;}
+    btn.disabled=true;btn.textContent='Verifying…';
+    var rkHash=await hashPassword(rk);
+    var storedRkHash=await getStoredRecoveryHash();
+    if(rkHash!==storedRkHash){
+      err.textContent='Invalid recovery key.';
+      inp.classList.add('error');setTimeout(function(){inp.classList.remove('error');},500);
+      btn.disabled=false;btn.textContent='Reset Password';
+      return;
+    }
+    var newHash=await hashPassword(newPw);
+    await setStoredHash(newHash);
+    var newRk=generateRecoveryKey();
+    await setStoredRecoveryHash(await hashPassword(newRk));
+    pwUnlocked=true;
+    overlay.classList.add('hidden');
+    document.getElementById('MP').style.display='';
+    btn.disabled=false;
+    var oldNewPw=document.getElementById('lockNewPw');
+    if(oldNewPw)oldNewPw.remove();
+    inp.type='password';inp.style.letterSpacing='2px';inp.style.textTransform='';
+    showRecoveryKeyModal(newRk);
+  };
+  setTimeout(function(){
+    var bl=document.getElementById('backToLogin');
+    if(bl)bl.addEventListener('click',function(e){
+      e.preventDefault();
+      var oldNewPw=document.getElementById('lockNewPw');
+      if(oldNewPw)oldNewPw.remove();
+      inp.type='password';inp.value='';inp.placeholder='••••••••';inp.style.letterSpacing='2px';inp.style.textTransform='';
+      initPasswordSystem();
+    });
+  },50);
 }
 
 function setupPasswordChange(){
@@ -368,7 +464,10 @@ function setupPasswordChange(){
         if(oldHash!==storedHash){errEl.textContent='Current password is wrong';return;}
         var newHash=await hashPassword(newPw);
         await setStoredHash(newHash);
+        var newRk=generateRecoveryKey();
+        await setStoredRecoveryHash(await hashPassword(newRk));
         closeModal();
+        showRecoveryKeyModal(newRk);
         showToast('Password changed!');
       };
       btns.appendChild(save);
