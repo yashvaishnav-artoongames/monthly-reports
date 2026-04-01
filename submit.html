@@ -142,7 +142,8 @@ function formAdSources(){
   h+='<button class="add-row" id="addAdRow">＋ Add campaign</button>';
   return h;
 }
-function addAdRow(){var n=nextN('ad');var tb=document.getElementById('tblB');tb.insertAdjacentHTML('beforeend','<tr id="adr_'+n+'"><td><input type="text" placeholder="Source"></td><td><input type="text" placeholder="Campaign"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
+function addAdRow(){var n=nextN('ad');var tb=document.getElementById('tblB');tb.insertAdjacentHTML('beforeend','<tr id="adr_'+n+'"><td><select class="src-sel" style="width:110px;" onchange="updCampDd(this)">'+srcOpt()+'</select></td><td><select class="camp-sel" style="width:130px;"><option value="">— pick source first —</option></select></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
+function updCampDd(srcSel){var tr=srcSel.closest('tr');var cs=tr.querySelector('.camp-sel');if(!cs)return;cs.innerHTML=campOpt(srcSel.value);}
 
 function formEngagement(){return'<div class="tw"><table><thead><tr><th style="width:180px;">Metric</th><th class="cc">World</th><th class="cc">US</th></tr></thead><tbody><tr><td>Avg sessions/user</td><td><input type="text" id="eg_sw" style="width:110px;"></td><td><input type="text" id="eg_su" style="width:110px;"></td></tr><tr><td>Avg session time (min)</td><td><input type="text" id="eg_tw" style="width:110px;"></td><td><input type="text" id="eg_tu" style="width:110px;"></td></tr><tr><td>Avg engage time (min)</td><td><input type="text" id="eg_ew" style="width:110px;"></td><td><input type="text" id="eg_eu" style="width:110px;"></td></tr></tbody></table></div>';}
 
@@ -156,7 +157,7 @@ function formCountries(){
   var h='<div class="tw"><table style="min-width:620px;"><thead><tr><th style="width:120px;">Country</th><th>Users</th><th>Revenue</th><th>Cost</th><th>CPU</th><th>ROAS</th><th>Sess</th><th>Time</th><th>Eng</th><th style="width:28px;"></th></tr></thead><tbody id="tblB"></tbody></table></div>';
   h+='<button class="add-row" id="addCRow">＋ Add country</button>';return h;
 }
-function addCRow(){var n=nextN('c');document.getElementById('tblB').insertAdjacentHTML('beforeend','<tr id="cr_'+n+'"><td><input type="text" placeholder="Country"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
+function addCRow(){var n=nextN('c');document.getElementById('tblB').insertAdjacentHTML('beforeend','<tr id="cr_'+n+'"><td><select style="width:110px;">'+cOpt()+'</select></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
 
 function formStability(){
   var h='<div class="sub-label" style="background:#fef0f0;color:#dc2626;">Stability per version</div>';
@@ -173,7 +174,7 @@ function formStore(){
   h+='<div class="tw"><table><thead><tr><th style="width:140px;">Keyword</th><th>Rank</th><th>Volume</th><th>Installs</th><th>CVR</th><th>Rank Δ</th><th style="width:28px;"></th></tr></thead><tbody id="tblK"></tbody></table></div>';
   h+='<button class="add-row" id="addKwRow">＋ Add keyword</button>';return h;
 }
-function addStRow(){var n=nextN('st');document.getElementById('tblB').insertAdjacentHTML('beforeend','<tr id="str_'+n+'"><td><input type="text" placeholder="Country"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
+function addStRow(){var n=nextN('st');document.getElementById('tblB').insertAdjacentHTML('beforeend','<tr id="str_'+n+'"><td><select style="width:110px;">'+cOpt()+'</select></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
 function addKwRow(){var n=nextN('kw');document.getElementById('tblK').insertAdjacentHTML('beforeend','<tr id="kwr_'+n+'"><td><input type="text" placeholder="Keyword" style="text-align:left;"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><button class="db" onclick="this.closest(\'tr\').remove()">✕</button></td></tr>');}
 
 function formRevenue(){
@@ -300,7 +301,7 @@ document.getElementById('subGame').addEventListener('change',function(){
 
 async function loadRIDs(game){
   var sl=gSlug(game.name);
-  var rids=await fbG('/games/'+sl+'/reports/ua/ridList');
+  var rids=await fbG('/games/'+sl+'/verList');
   var el=document.getElementById('ridList');
   if(!rids||!rids.length){el.innerHTML='<div class="no-items">No Report IDs yet. Ask the report owner to create one in the dashboard.</div>';return;}
   el.innerHTML='';
@@ -312,7 +313,8 @@ async function loadRIDs(game){
       el.querySelectorAll('.rid-card').forEach(function(c){c.classList.remove('active');});
       card.classList.add('active');
       selRID=rid;
-      showSectionPicker();
+      /* Load config from Firebase for linked dropdowns */
+      loadVerConfig(game,rid).then(function(){showSectionPicker();});
     });
     el.appendChild(card);
   });
@@ -335,6 +337,17 @@ function showSectionPicker(){
   document.getElementById('step3').classList.add('hidden');
   document.getElementById('step2').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+/* ═══ LOAD CONFIG FROM DASHBOARD ═══ */
+var UC={countries:[],sources:[],campaigns:{},platforms:[]};
+async function loadVerConfig(game,rid){
+  var sl=gSlug(game.name),vs=gSlug(rid);
+  var d=await fbG('/games/'+sl+'/versions/'+vs+'/ua/data');
+  if(d&&d.cfg){UC=d.cfg;}else{UC={countries:['United States','Germany','United Kingdom','France','Japan','Canada','Italy','South Korea','Australia'],sources:['Google Ads','Unity Ads','Apple Ads','AppLovin','Facebook Ads'],campaigns:{'Google Ads':['USA ROAS Max Conv','Top Countries ROAS'],'Unity Ads':['Install 125 USA'],'Facebook Ads':['Top Countries 25'],'Apple Ads':[],'AppLovin':[]},platforms:['Android','iPhone','Both']};}
+}
+function cOpt(){var h='<option value="">— select —</option>';UC.countries.forEach(function(v){h+='<option value="'+v+'">'+v+'</option>';});return h;}
+function srcOpt(){var h='<option value="">— source —</option>';UC.sources.forEach(function(v){h+='<option value="'+v+'">'+v+'</option>';});return h;}
+function campOpt(src){var c=(UC.campaigns&&UC.campaigns[src])||[];var h='<option value="">— campaign —</option>';c.forEach(function(v){h+='<option value="'+v+'">'+v+'</option>';});return h;}
 
 init();
 </script>
