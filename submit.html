@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Submit Data — Monthly Reports</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lexend',sans-serif;background:#f0f2f7;color:#1a1d23;min-height:100vh;padding:0;}
+.topbar{background:#fff;border-bottom:1px solid #e8eaed;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.topbar-brand{font-size:16px;font-weight:800;color:#3b5bdb;}.topbar-sep{color:#d1d5db;}.topbar-crumb{font-size:12px;font-weight:600;color:#6b7280;}
+.page{max-width:720px;margin:0 auto;padding:32px 20px 60px;}
+.hero{text-align:center;margin-bottom:32px;}.hero-icon{font-size:48px;margin-bottom:12px;}.hero-title{font-size:24px;font-weight:800;margin-bottom:6px;}.hero-sub{font-size:13px;color:#6b7280;line-height:1.7;}
+.card{background:#fff;border:1px solid #e8eaed;border-radius:14px;padding:28px 24px;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,.04);}
+.card-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-icon{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.field{margin-bottom:14px;}.field-label{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+input[type="text"],select,textarea{width:100%;padding:10px 14px;border:1.5px solid #e8eaed;border-radius:8px;font-size:13px;font-family:'Lexend',sans-serif;color:#1a1d23;background:#fff;transition:all .2s;-webkit-appearance:none;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#3b5bdb;box-shadow:0 0 0 3px rgba(59,91,219,.1);}
+select{appearance:auto;-webkit-appearance:auto;cursor:pointer;}
+textarea{min-height:80px;resize:vertical;line-height:1.7;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.section-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px;}
+.sec-opt{border:2px solid #e8eaed;border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all .2s;}.sec-opt:hover{border-color:#3b5bdb;background:#f0f4ff;}
+.sec-opt.active{border-color:#3b5bdb;background:#eef2ff;box-shadow:0 0 0 3px rgba(59,91,219,.1);}
+.sec-opt-icon{font-size:24px;margin-bottom:6px;}.sec-opt-name{font-size:11px;font-weight:700;}.sec-opt-desc{font-size:9px;color:#9ca3af;margin-top:3px;}
+.dyn-section{display:none;}.dyn-section.show{display:block;}
+.tw{overflow-x:auto;border-radius:8px;margin-bottom:4px;}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;border:1px solid #e8eaed;border-radius:8px;overflow:hidden;}
+thead tr{background:#f8f9fc;}
+th{padding:9px 8px;text-align:center;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #e8eaed;white-space:nowrap;}
+th:first-child{text-align:left;padding-left:14px;}
+td{padding:7px 6px;text-align:center;border-bottom:1px solid #f3f4f6;}
+td:first-child{text-align:left;padding-left:14px;font-weight:600;}
+tbody tr:last-child td{border-bottom:none;}
+table input[type="text"]{padding:8px 6px;font-size:12px;text-align:center;}
+.add-row{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px dashed #c7d2fe;border-radius:6px;padding:7px 16px;font-size:11px;font-weight:700;color:#3b5bdb;cursor:pointer;font-family:'Lexend',sans-serif;margin-top:8px;}.add-row:hover{background:#eef2ff;border-style:solid;}
+.sub-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding:5px 12px;border-radius:6px;display:inline-block;}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#3b5bdb,#364fc7);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Lexend',sans-serif;box-shadow:0 6px 20px rgba(59,91,219,.3);transition:all .2s;margin-top:8px;}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(59,91,219,.4);}
+.submit-btn:disabled{opacity:.5;pointer-events:none;}
+.success-card{background:#ecfdf5;border:2px solid #a7f3d0;border-radius:14px;padding:32px;text-align:center;display:none;}
+.success-card.show{display:block;}.success-icon{font-size:48px;margin-bottom:12px;}.success-title{font-size:18px;font-weight:800;color:#059669;margin-bottom:6px;}.success-sub{font-size:12px;color:#6b7280;line-height:1.7;}
+.success-btn{margin-top:16px;padding:10px 28px;background:#059669;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Lexend',sans-serif;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,29,35,.88);color:#fff;font-size:11px;font-weight:600;padding:8px 18px;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .3s;z-index:999;}.toast.show{opacity:1;}
+.loading-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.85);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:12px;}.loading-overlay.show{display:flex;}
+.loading-spinner{width:36px;height:36px;border:3px solid #e8eaed;border-top-color:#3b5bdb;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:13px;font-weight:700;color:#3b5bdb;}
+.err-card{background:#fef2f2;border:2px solid #fecaca;border-radius:14px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+.err-card.show{display:block;}.err-card-msg{font-size:12px;color:#dc2626;font-weight:600;}
+@media(max-width:520px){.page{padding:20px 14px;}.card{padding:20px 16px;}.grid2,.grid3{grid-template-columns:1fr;}.section-pick{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<span class="topbar-brand">📊 Reports</span>
+<span class="topbar-sep">›</span>
+<span class="topbar-crumb">Submit Data</span>
+</div>
+
+<div class="page">
+<div class="hero">
+<div class="hero-icon">📩</div>
+<div class="hero-title">Submit Report Data</div>
+<div class="hero-sub">Fill in your section's data. It will be sent for review before being merged into the report.</div>
+</div>
+
+<div class="err-card" id="errCard"><div class="err-card-msg" id="errMsg"></div></div>
+
+<!-- Step 1: Identity -->
+<div class="card" id="step1">
+<div class="card-title"><span class="card-icon" style="background:#6b7280;">1</span> Your Info</div>
+<div class="grid2">
+<div class="field"><div class="field-label">Your name</div><input type="text" id="subName" placeholder="e.g. Sarah K."></div>
+<div class="field"><div class="field-label">Period</div><input type="text" id="subPeriod" placeholder="e.g. 1 Mar – 31 Mar 2026"></div>
+</div>
+<div class="grid2">
+<div class="field"><div class="field-label">Game</div><select id="subGame"><option value="">Loading games…</option></select></div>
+<div class="field"><div class="field-label">Report type</div><select id="subReport"><option value="">— select game first —</option></select></div>
+</div>
+</div>
+
+<!-- Step 2: Section picker -->
+<div class="card" id="step2" style="display:none;">
+<div class="card-title"><span class="card-icon" style="background:#3b5bdb;">2</span> What are you submitting?</div>
+<div class="section-pick" id="secPick"></div>
+</div>
+
+<!-- Step 3: Data form -->
+<div class="card" id="step3" style="display:none;">
+<div class="card-title"><span class="card-icon" style="background:#059669;">3</span> <span id="secFormTitle">Enter Data</span></div>
+<div id="secFormBody"></div>
+<div class="field" style="margin-top:18px;">
+<div class="field-label">Notes (optional)</div>
+<textarea id="subNotes" placeholder="Any context, caveats, or observations…"></textarea>
+</div>
+<button class="submit-btn" id="submitBtn">📩 Submit for Review</button>
+</div>
+
+<!-- Success -->
+<div class="success-card" id="successCard">
+<div class="success-icon">✅</div>
+<div class="success-title">Submitted!</div>
+<div class="success-sub">Your data has been sent for review. The report owner will approve or reject it.</div>
+<button class="success-btn" onclick="resetForm()">Submit Another</button>
+</div>
+</div>
+
+<div class="loading-overlay" id="loadOv"><div class="loading-spinner"></div><div class="loading-text">Submitting…</div></div>
+<div class="toast" id="tst"></div>
+
+<script>
+var FB='https://monthly-reports-database-default-rtdb.asia-southeast1.firebasedatabase.app';
+var GAMES=[],curGame=null,curRpt=null,curSec=null;
+
+async function fbG(p){try{var r=await fetch(FB+p+'.json');if(r.ok)return r.json();}catch(e){}return null;}
+async function fbS(p,d){try{var r=await fetch(FB+p+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});return r.ok;}catch(e){}return false;}
+
+function toast(m){var t=document.getElementById('tst');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1800);}
+function showErr(m){var c=document.getElementById('errCard');document.getElementById('errMsg').textContent=m;c.classList.add('show');setTimeout(function(){c.classList.remove('show');},5000);}
+
+/* ═══ SECTION DEFINITIONS ═══ */
+var SECTIONS={
+  ua:[
+    {id:'ads',name:'Ad Sources',icon:'📢',desc:'Campaign installs, revenue, cost'},
+    {id:'store',name:'Store & ASO',icon:'🏪',desc:'Visitors, CVR, keywords'},
+    {id:'firebase',name:'Retention & Engagement',icon:'🔥',desc:'D1–D30 retention, sessions'},
+    {id:'revenue',name:'Revenue',icon:'💰',desc:'IAP, ads, subs breakdown'},
+    {id:'stability',name:'Stability',icon:'📱',desc:'Crash rates, ANR, ratings'}
+  ],
+  revenue:[
+    {id:'revenue',name:'Revenue',icon:'💰',desc:'IAP, ads, subs'},
+    {id:'ads_breakdown',name:'Ad Breakdown',icon:'📺',desc:'Rewarded, interstitial, banner'},
+    {id:'iap',name:'IAP Packages',icon:'🛍️',desc:'Package sales data'},
+    {id:'monetization',name:'Monetization',icon:'📊',desc:'ARPU, ARPPU, paying %'}
+  ],
+  aso:[
+    {id:'store',name:'Store Listing',icon:'🏪',desc:'Visitors, acquisitions, CVR'},
+    {id:'keywords',name:'Keywords',icon:'🔑',desc:'Rank, volume, installs'},
+    {id:'ratings',name:'Ratings & Reviews',icon:'⭐',desc:'Rating breakdown'}
+  ],
+  console:[
+    {id:'stability',name:'Stability',icon:'📱',desc:'Crash, ANR per version'},
+    {id:'ratings',name:'Ratings',icon:'⭐',desc:'Overall rating, reviews'},
+    {id:'changelog',name:'Changelog',icon:'📝',desc:'Version release notes'}
+  ]
+};
+
+/* ═══ FORM GENERATORS ═══ */
+var dynRowCount={};
+function nextRow(key){if(!dynRowCount[key])dynRowCount[key]=0;dynRowCount[key]++;return dynRowCount[key];}
+
+function formAds(){
+  var h='<div class="sub-label" style="background:#fefce8;color:#92400e;">Campaign data</div>';
+  h+='<div class="tw"><table style="min-width:620px;" id="tblAds"><thead><tr><th style="width:140px;">Source</th><th style="width:140px;">Campaign</th><th>Installs</th><th>Revenue</th><th>Cost</th><th>CPU</th><th>ROAS</th></tr></thead><tbody id="adsBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addAdsRow()">＋ Add campaign</button>';
+  return h;
+}
+function addAdsRow(){
+  var n=nextRow('ads');
+  document.getElementById('adsBody').insertAdjacentHTML('beforeend','<tr id="adr_'+n+'"><td><input type="text" placeholder="e.g. Google Ads"></td><td><input type="text" placeholder="Campaign name"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+}
+
+function formStore(){
+  var h='<div class="sub-label" style="background:#eef2ff;color:#3b5bdb;">Store listing</div>';
+  h+='<div class="tw"><table id="tblStore"><thead><tr><th style="width:130px;">Country</th><th>Visitors</th><th>Acquisitions</th><th>CVR %</th><th>vs Peers</th></tr></thead><tbody id="storeBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addStoreRow()">＋ Add country</button>';
+  h+='<div class="sub-label" style="background:#f5f3ff;color:#6b21a8;margin-top:18px;">Keywords</div>';
+  h+='<div class="tw"><table id="tblKw"><thead><tr><th style="width:160px;">Keyword</th><th>Rank</th><th>Volume</th><th>Installs</th><th>CVR</th><th>Rank Δ</th></tr></thead><tbody id="kwBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addKwRow()">＋ Add keyword</button>';
+  return h;
+}
+function addStoreRow(){
+  var n=nextRow('store');
+  document.getElementById('storeBody').insertAdjacentHTML('beforeend','<tr id="str_'+n+'"><td><input type="text" placeholder="Country"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+}
+function addKwRow(){
+  var n=nextRow('kw');
+  document.getElementById('kwBody').insertAdjacentHTML('beforeend','<tr id="kwr_'+n+'"><td><input type="text" placeholder="Keyword" style="text-align:left;"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+}
+
+function formFirebase(){
+  var h='<div class="sub-label" style="background:#faf5ff;color:#6b21a8;">Retention (D1–D30)</div>';
+  h+='<div class="tw"><table><thead><tr><th style="width:80px;">Region</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>D6</th><th>D7</th><th>D14</th><th>D30</th></tr></thead><tbody>';
+  ['World','US'].forEach(function(r){
+    var rk=r.toLowerCase().replace(/\s/g,'');
+    h+='<tr><td style="font-weight:700;">'+r+'</td>';
+    ['d1','d2','d3','d4','d5','d6','d7','d14','d30'].forEach(function(d){
+      h+='<td><input type="text" id="ret_'+rk+'_'+d+'" style="width:50px;"></td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div class="sub-label" style="background:#f0fdf4;color:#166534;margin-top:18px;">Engagement</div>';
+  h+='<div class="tw"><table><thead><tr><th style="width:180px;">Metric</th><th>World</th><th>US</th></tr></thead><tbody>';
+  [['Avg sessions/user','sess'],['Avg session time (min)','stime'],['Avg engage time (min)','etime']].forEach(function(m){
+    h+='<tr><td>'+m[0]+'</td><td><input type="text" id="eng_'+m[1]+'_w" style="width:100px;"></td><td><input type="text" id="eng_'+m[1]+'_u" style="width:100px;"></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function formRevenue(){
+  var h='<div class="sub-label" style="background:#ecfdf5;color:#059669;">Revenue by source</div>';
+  h+='<div class="tw"><table><thead><tr><th style="width:150px;">Stream</th><th>Amount ($)</th><th>%</th></tr></thead><tbody>';
+  [['IAP','iap'],['Ad revenue','ads'],['Subs','subs'],['Total','total']].forEach(function(s){
+    h+='<tr><td'+(s[1]==='total'?' style="font-weight:800;"':'')+'>'+s[0]+'</td><td><input type="text" id="rev_'+s[1]+'" style="width:120px;"></td><td><input type="text" id="rev_'+s[1]+'_pct" style="width:60px;"'+(s[1]==='total'?' value="100%" readonly style="width:60px;background:#f3f4f6;"':'')+' ></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function formAdsBreakdown(){
+  var h='<div class="sub-label" style="background:#fefce8;color:#92400e;">Ad format breakdown</div>';
+  h+='<div class="tw"><table><thead><tr><th style="width:120px;">Format</th><th>Revenue</th><th>Impressions</th><th>eCPM</th><th>Fill %</th></tr></thead><tbody>';
+  [['Rewarded','rw'],['Interstitial','int'],['Banner','ban']].forEach(function(f){
+    h+='<tr><td>'+f[0]+'</td><td><input type="text" id="adb_'+f[1]+'_rev"></td><td><input type="text" id="adb_'+f[1]+'_imp"></td><td><input type="text" id="adb_'+f[1]+'_ecpm"></td><td><input type="text" id="adb_'+f[1]+'_fill"></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function formIAP(){
+  var h='<div class="sub-label" style="background:#eef2ff;color:#3b5bdb;">IAP packages</div>';
+  h+='<div class="tw"><table id="tblIAP"><thead><tr><th style="width:170px;">Package</th><th>Price</th><th>Purchases</th><th>Revenue</th><th>% IAP</th></tr></thead><tbody id="iapBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addIAPRow()">＋ Add package</button>';
+  return h;
+}
+function addIAPRow(){
+  var n=nextRow('iap');
+  document.getElementById('iapBody').insertAdjacentHTML('beforeend','<tr id="iapr_'+n+'"><td><input type="text" placeholder="Package name" style="text-align:left;"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+}
+
+function formMonetization(){
+  var h='<div class="sub-label" style="background:#f5f3ff;color:#6b21a8;">Monetization metrics</div>';
+  h+='<div class="grid3">';
+  [['ARPU','m_arpu'],['ARPPU','m_arppu'],['Paying %','m_payp'],['Avg transaction','m_atv'],['Trans/user','m_tpu'],['UA cost','m_uacost'],['CPU','m_cpu'],['ROAS','m_roas'],['Target','m_target']].forEach(function(m){
+    h+='<div class="field"><div class="field-label">'+m[0]+'</div><input type="text" id="'+m[1]+'"></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function formStability(){
+  var h='<div class="sub-label" style="background:#fef0f0;color:#dc2626;">Stability per version</div>';
+  h+='<div class="tw"><table id="tblStab"><thead><tr><th style="width:100px;">Version</th><th>Crash rate</th><th>ANR rate</th><th>Sessions</th><th>Rating</th><th>Reviews</th><th>Total reviews</th></tr></thead><tbody id="stabBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addStabRow()">＋ Add version</button>';
+  return h;
+}
+function addStabRow(){
+  var n=nextRow('stab');
+  document.getElementById('stabBody').insertAdjacentHTML('beforeend','<tr id="stabr_'+n+'"><td><input type="text" placeholder="v6.7.2" style="font-weight:700;"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>');
+}
+
+function formRatings(){
+  var h='<div class="sub-label" style="background:#fef0f0;color:#dc2626;">Ratings overview</div>';
+  h+='<div class="grid2">';
+  [['Overall rating','rt_rating'],['Total reviews','rt_total'],['New reviews','rt_new'],['Avg score','rt_avg']].forEach(function(m){
+    h+='<div class="field"><div class="field-label">'+m[0]+'</div><input type="text" id="'+m[1]+'"></div>';
+  });
+  h+='</div>';
+  h+='<div class="sub-label" style="background:#fef0f0;color:#dc2626;margin-top:14px;">Star breakdown</div>';
+  h+='<div class="tw"><table><thead><tr><th>Stars</th><th>Count</th><th>% of total</th><th>Change</th></tr></thead><tbody>';
+  [5,4,3,2,1].forEach(function(s){
+    h+='<tr><td style="font-weight:700;">'+s+' ★</td><td><input type="text" id="rt_s'+s+'_c"></td><td><input type="text" id="rt_s'+s+'_p"></td><td><input type="text" id="rt_s'+s+'_d"></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function formChangelog(){
+  var h='<div class="sub-label" style="background:#f5f3ff;color:#6b21a8;">Version changelog</div>';
+  h+='<div class="tw"><table id="tblCL"><thead><tr><th style="width:100px;">Version</th><th style="width:110px;">Release date</th><th>Changes / notes</th></tr></thead><tbody id="clBody"></tbody></table></div>';
+  h+='<button class="add-row" onclick="addCLRow()">＋ Add version</button>';
+  return h;
+}
+function addCLRow(){
+  var n=nextRow('cl');
+  document.getElementById('clBody').insertAdjacentHTML('beforeend','<tr id="clr_'+n+'"><td><input type="text" placeholder="v6.7.2" style="font-weight:700;"></td><td><input type="text" placeholder="2026-03-15"></td><td><input type="text" style="text-align:left;" placeholder="Changes…"></td></tr>');
+}
+
+/* ═══ FORM RENDERING MAP ═══ */
+var FORM_MAP={
+  ads:{title:'Ad Sources & Campaigns',gen:formAds,seed:function(){for(var i=0;i<3;i++)addAdsRow();}},
+  store:{title:'Store Listing & Keywords',gen:formStore,seed:function(){for(var i=0;i<3;i++){addStoreRow();addKwRow();}}},
+  firebase:{title:'Retention & Engagement',gen:formFirebase,seed:null},
+  revenue:{title:'Revenue by Source',gen:formRevenue,seed:null},
+  ads_breakdown:{title:'Ad Format Breakdown',gen:formAdsBreakdown,seed:null},
+  iap:{title:'IAP Packages',gen:formIAP,seed:function(){for(var i=0;i<3;i++)addIAPRow();}},
+  monetization:{title:'Monetization Metrics',gen:formMonetization,seed:null},
+  stability:{title:'Stability & Ratings',gen:formStability,seed:function(){for(var i=0;i<2;i++)addStabRow();}},
+  ratings:{title:'Ratings & Reviews',gen:formRatings,seed:null},
+  keywords:{title:'Keywords',gen:function(){
+    var h='<div class="tw"><table id="tblKw"><thead><tr><th style="width:160px;">Keyword</th><th>Rank</th><th>Volume</th><th>Installs</th><th>CVR</th><th>Rank Δ</th></tr></thead><tbody id="kwBody"></tbody></table></div>';
+    h+='<button class="add-row" onclick="addKwRow()">＋ Add keyword</button>';return h;
+  },seed:function(){for(var i=0;i<5;i++)addKwRow();}},
+  changelog:{title:'Version Changelog',gen:formChangelog,seed:function(){for(var i=0;i<2;i++)addCLRow();}}
+};
+
+/* ═══ COLLECT DATA ═══ */
+function collectData(){
+  var data={};
+  var form=document.getElementById('secFormBody');
+  form.querySelectorAll('input[type="text"],textarea').forEach(function(el){
+    if(el.id)data[el.id]=el.value.trim();
+  });
+  /* Collect table rows */
+  var tables=['adsBody','storeBody','kwBody','iapBody','stabBody','clBody'];
+  tables.forEach(function(tbId){
+    var tb=document.getElementById(tbId);
+    if(!tb)return;
+    var rows=[];
+    tb.querySelectorAll('tr').forEach(function(r){
+      var vals=[];
+      r.querySelectorAll('input').forEach(function(inp){vals.push(inp.value.trim());});
+      if(vals.some(function(v){return v;}))rows.push(vals);
+    });
+    if(rows.length)data['_rows_'+tbId]=rows;
+  });
+  return data;
+}
+
+/* ═══ INIT ═══ */
+async function init(){
+  var d=await fbG('/glist');
+  GAMES=d||[];
+  var gs=document.getElementById('subGame');
+  gs.innerHTML='<option value="">— select game —</option>';
+  GAMES.forEach(function(g,i){
+    gs.innerHTML+='<option value="'+i+'">'+g.name+'</option>';
+  });
+  /* URL params */
+  var params=new URLSearchParams(window.location.search);
+  var pg=params.get('game'),ps=params.get('section'),pr=params.get('report');
+  if(pg){
+    for(var i=0;i<GAMES.length;i++){
+      if(GAMES[i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-')===pg){
+        gs.value=i;gs.dispatchEvent(new Event('change'));break;
+      }
+    }
+  }
+}
+
+document.getElementById('subGame').addEventListener('change',function(){
+  var idx=this.value;
+  var rs=document.getElementById('subReport');
+  if(!idx&&idx!==0){rs.innerHTML='<option value="">— select game first —</option>';document.getElementById('step2').style.display='none';document.getElementById('step3').style.display='none';return;}
+  curGame=GAMES[parseInt(idx)];
+  var rpts=curGame.reports||['ua'];
+  var RTYPES={ua:'UA Report',revenue:'Revenue',aso:'ASO Report',console:'Play Console'};
+  rs.innerHTML='<option value="">— select report —</option>';
+  rpts.forEach(function(r){rs.innerHTML+='<option value="'+r+'">'+(RTYPES[r]||r)+'</option>';});
+});
+
+document.getElementById('subReport').addEventListener('change',function(){
+  curRpt=this.value;
+  if(!curRpt){document.getElementById('step2').style.display='none';document.getElementById('step3').style.display='none';return;}
+  var secs=SECTIONS[curRpt]||[];
+  var pick=document.getElementById('secPick');
+  pick.innerHTML='';
+  secs.forEach(function(s){
+    var d=document.createElement('div');
+    d.className='sec-opt';
+    d.setAttribute('data-sec',s.id);
+    d.innerHTML='<div class="sec-opt-icon">'+s.icon+'</div><div class="sec-opt-name">'+s.name+'</div><div class="sec-opt-desc">'+s.desc+'</div>';
+    d.addEventListener('click',function(){
+      pick.querySelectorAll('.sec-opt').forEach(function(x){x.classList.remove('active');});
+      d.classList.add('active');
+      curSec=s.id;
+      showForm(s.id);
+    });
+    pick.appendChild(d);
+  });
+  document.getElementById('step2').style.display='';
+  document.getElementById('step3').style.display='none';
+});
+
+function showForm(secId){
+  var fm=FORM_MAP[secId];
+  if(!fm){showErr('Unknown section: '+secId);return;}
+  dynRowCount={};
+  document.getElementById('secFormTitle').textContent=fm.title;
+  document.getElementById('secFormBody').innerHTML=fm.gen();
+  if(fm.seed)fm.seed();
+  document.getElementById('step3').style.display='';
+  document.getElementById('step3').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ═══ SUBMIT ═══ */
+document.getElementById('submitBtn').addEventListener('click',async function(){
+  var name=document.getElementById('subName').value.trim();
+  var period=document.getElementById('subPeriod').value.trim();
+  if(!name){showErr('Please enter your name.');document.getElementById('subName').focus();return;}
+  if(!period){showErr('Please enter the period.');document.getElementById('subPeriod').focus();return;}
+  if(!curGame){showErr('Please select a game.');return;}
+  if(!curRpt){showErr('Please select a report type.');return;}
+  if(!curSec){showErr('Please select a section.');return;}
+
+  var data=collectData();
+  var slug=curGame.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  var submission={
+    id:Date.now(),
+    submitter:name,
+    period:period,
+    game:curGame.name,
+    gameSlug:slug,
+    report:curRpt,
+    section:curSec,
+    sectionTitle:(FORM_MAP[curSec]||{}).title||curSec,
+    date:new Date().toISOString(),
+    status:'pending',
+    notes:document.getElementById('subNotes').value.trim(),
+    data:data
+  };
+
+  document.getElementById('loadOv').classList.add('show');
+  var path='/games/'+slug+'/submissions/sub_'+submission.id;
+  var ok=await fbS(path,submission);
+  document.getElementById('loadOv').classList.remove('show');
+
+  if(ok){
+    document.getElementById('step1').style.display='none';
+    document.getElementById('step2').style.display='none';
+    document.getElementById('step3').style.display='none';
+    document.getElementById('successCard').classList.add('show');
+  }else{
+    showErr('Failed to submit. Check your connection and try again.');
+  }
+});
+
+function resetForm(){
+  document.getElementById('successCard').classList.remove('show');
+  document.getElementById('step1').style.display='';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step3').style.display='none';
+  document.getElementById('subNotes').value='';
+  curSec=null;
+  dynRowCount={};
+}
+
+init();
+</script>
+</body>
+</html>
