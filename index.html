@@ -41,6 +41,8 @@ body{font-family:'Lexend',sans-serif;background:#f0f2f7;color:#1a1d23;min-height
 .ua-bar{display:flex;align-items:center;justify-content:space-between;background:#f8f9fc;border:1px solid #e8eaed;border-radius:10px;padding:10px 16px;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
 .ua-bar-left{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;}.ua-bar-right{display:flex;gap:8px;flex-wrap:wrap;}
 .ua-btn{padding:6px 16px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Lexend',sans-serif;border:1px solid #e8eaed;background:#fff;color:#6b7280;touch-action:manipulation;}.ua-btn:hover{border-color:#3b5bdb;color:#3b5bdb;background:#f0f4ff;}.ua-btn.danger{border-color:#fecaca;color:#dc2626;}.ua-btn.mode{border-color:#e9d5ff;color:#7c3aed;background:#f5f3ff;}.ua-btn.mode.active{background:#7c3aed;color:#fff;border-color:#7c3aed;}
+.ua-btn.inbox{border-color:#fbbf24;color:#b45309;background:#fffbeb;position:relative;}.ua-btn.inbox:hover{border-color:#f59e0b;background:#fef3c7;}
+.inbox-badge{position:absolute;top:-6px;right:-6px;background:#dc2626;color:#fff;font-size:9px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
 .sdot{width:8px;height:8px;border-radius:50%;display:inline-block;}.sdot.ok{background:#059669;}.sdot.un{background:#f59e0b;animation:pp 1.5s infinite;}.sdot.sv{background:#3b5bdb;animation:pp .6s infinite;}@keyframes pp{0%,100%{opacity:1;}50%{opacity:.4;}}
 .ua-badge{font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;}.ua-badge.cur{color:#059669;background:#ecfdf5;border:1px solid #a7f3d0;}.ua-badge.prev{color:#7c3aed;background:#f5f3ff;border:1px solid #e9d5ff;}
 .ua-sec{margin-bottom:32px;}.ua-sec-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9ca3af;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e8eaed;display:flex;align-items:center;gap:8px;}
@@ -97,6 +99,28 @@ body.prev-mode .ua-page input.eng{background:#f0eaff!important;border-color:#ddd
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.ccl{background:#fff;border:1px solid #e8eaed;border-radius:10px;padding:16px;}.cct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#6b7280;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .cts{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;}.ctg{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;color:#3b5bdb;font-size:10px;font-weight:600;padding:4px 10px;border-radius:16px;white-space:nowrap;}.ctg button{background:none;border:none;color:#93a3d8;font-size:12px;cursor:pointer;padding:0;line-height:1;}.ctg button:hover{color:#dc2626;}
 .car{display:flex;gap:6px;margin-top:10px;}.car input,.car select{flex:1;padding:6px 10px;border:1px solid #e8eaed;border-radius:6px;font-size:11px;font-family:'Lexend',sans-serif;background:#fff;text-align:left;}.carb{background:#3b5bdb;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Lexend',sans-serif;}
+/* Submissions Review */
+.sub-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:99990;backdrop-filter:blur(4px);overflow-y:auto;padding:20px;}.sub-overlay.show{display:flex;justify-content:center;align-items:flex-start;}
+.sub-panel{background:#fff;border-radius:16px;max-width:800px;width:100%;margin:20px auto;box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden;animation:subIn .3s ease;}
+@keyframes subIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.sub-panel-hdr{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.sub-panel-title{font-size:16px;font-weight:800;}.sub-panel-close{background:rgba(255,255,255,.2);border:none;color:#fff;font-size:14px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Lexend',sans-serif;}
+.sub-panel-body{padding:24px;max-height:70vh;overflow-y:auto;}
+.sub-empty{text-align:center;padding:40px 20px;color:#9ca3af;font-size:13px;}
+.sub-item{border:1.5px solid #e8eaed;border-radius:12px;margin-bottom:14px;overflow:hidden;transition:border-color .2s;}.sub-item:hover{border-color:#f59e0b;}
+.sub-item-hdr{background:#fffbeb;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid #fef3c7;}
+.sub-item-sec{font-size:12px;font-weight:700;color:#b45309;}.sub-item-by{font-size:10px;color:#6b7280;}.sub-item-date{font-size:10px;color:#9ca3af;margin-left:auto;}
+.sub-item-period{font-size:10px;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:6px;}
+.sub-item-data{padding:14px 16px;font-size:11px;max-height:200px;overflow-y:auto;}
+.sub-data-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px;}.sub-data-tbl td{padding:5px 8px;border-bottom:1px solid #f3f4f6;}.sub-data-tbl td:first-child{font-weight:600;color:#6b7280;width:40%;text-align:left;}.sub-data-tbl td:last-child{text-align:left;color:#1a1d23;}
+.sub-data-rows{margin-top:8px;}.sub-data-rows-title{font-size:9px;font-weight:700;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;letter-spacing:.5px;}
+.sub-data-row-tbl{width:100%;border-collapse:collapse;font-size:10px;border:1px solid #f3f4f6;border-radius:6px;overflow:hidden;margin-bottom:6px;}
+.sub-data-row-tbl td{padding:4px 6px;border-bottom:1px solid #f8f9fc;text-align:center;}.sub-data-row-tbl tr:last-child td{border-bottom:none;}
+.sub-item-notes{padding:0 16px 10px;font-size:10px;color:#6b7280;font-style:italic;}
+.sub-item-actions{padding:12px 16px;background:#f8f9fc;border-top:1px solid #e8eaed;display:flex;gap:8px;}
+.sub-act-btn{padding:8px 20px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Lexend',sans-serif;border:none;transition:all .15s;}
+.sub-act-btn.approve{background:#059669;color:#fff;}.sub-act-btn.approve:hover{background:#047857;}
+.sub-act-btn.reject{background:#fff;color:#dc2626;border:1px solid #fecaca;}.sub-act-btn.reject:hover{background:#fef2f2;}
 @media(max-width:768px){.topnav{padding:10px 14px;gap:8px;flex-wrap:wrap;}.home-screen{padding:24px 14px;}.home-title{font-size:22px;}.game-grid{grid-template-columns:1fr;}.rp-grid{grid-template-columns:1fr 1fr;}.ua-page{padding:20px 14px;}.ua-bar{flex-direction:column;}.ua-mg{grid-template-columns:1fr;}.rg{grid-template-columns:1fr 1fr;}.cg{grid-template-columns:1fr;}.vsr{flex-direction:column;gap:6px;}.vsr input,.vsb{width:100%;}.vik{min-width:calc(50% - 6px);flex:unset;}}
 @media(max-width:420px){.ua-page{padding:14px 10px;}.rg{grid-template-columns:1fr;}.vik{min-width:100%;}.home-title{font-size:18px;}.rp-grid{grid-template-columns:1fr;}}
 </style>
@@ -107,6 +131,8 @@ body.prev-mode .ua-page input.eng{background:#f0eaff!important;border-color:#ddd
 <div id="sHome" style="display:none;"></div>
 <div id="sReports" style="display:none;"></div>
 <div id="sForm" style="display:none;padding:12px 16px 40px;"></div>
+<!-- Submissions Review Overlay -->
+<div class="sub-overlay" id="subOv"><div class="sub-panel"><div class="sub-panel-hdr"><div class="sub-panel-title">📩 Pending Submissions</div><button class="sub-panel-close" onclick="closeSubs()">✕ Close</button></div><div class="sub-panel-body" id="subBody"><div class="sub-empty">Loading…</div></div></div></div>
 <div class="cmodal-overlay" id="cmOv"><div class="cmodal"><div class="cmodal-icon" id="cmI"></div><div class="cmodal-title" id="cmT"></div><div class="cmodal-msg" id="cmM"></div><div class="cmodal-btns" id="cmB"></div></div></div>
 <div class="toast" id="tst"></div>
 <script>
@@ -155,9 +181,114 @@ function addRpt(rid){if(!curGame.reports)curGame.reports=[];if(curGame.reports.i
 function delRpt(rid){var rt=RTYPES.find(function(r){return r.id===rid;});var name=rt?rt.n:rid;if(curGame.reports&&curGame.reports.length<=1){toast('Need at least one report');return;}modal({icon:'🗑',title:'Remove "'+name+'"?',msg:'This will delete the report and all its saved data for this game.',okText:'Remove',cls:'danger',onOk:async function(){curGame.reports=curGame.reports.filter(function(r){return r!==rid;});GAMES[curGame._i]=curGame;await saveGames();var sl=gSlug();await fbD('/games/'+sl+'/reports/'+rid);renderRP();toast(name+' removed');}});}
 function openRpt(rid){curRpt=rid;var rt=RTYPES.find(function(r){return r.id===rid;});document.getElementById('nR').textContent=rt?rt.n:rid;updNav();var el=document.getElementById('sForm');el.innerHTML='';renderUA(el);showScr('sForm');}
 
+/* ═══ SUBMISSIONS SYSTEM ═══ */
+var pendingSubs=[];
+async function loadSubs(){
+  if(!curGame)return;
+  var sl=gSlug();
+  var d=await fbG('/games/'+sl+'/submissions');
+  pendingSubs=[];
+  if(d){Object.keys(d).forEach(function(k){var s=d[k];if(s&&s.status==='pending'&&s.report===curRpt)pendingSubs.push(s);});}
+  updSubBadge();
+}
+function updSubBadge(){
+  var btn=document.getElementById('uSubBtn');
+  if(!btn)return;
+  var badge=btn.querySelector('.inbox-badge');
+  if(pendingSubs.length>0){
+    if(!badge){badge=document.createElement('span');badge.className='inbox-badge';btn.appendChild(badge);}
+    badge.textContent=pendingSubs.length;
+    btn.style.display='';
+  }else{
+    if(badge)badge.remove();
+    btn.style.display='none';
+  }
+}
+function openSubs(){
+  var body=document.getElementById('subBody');
+  if(!pendingSubs.length){body.innerHTML='<div class="sub-empty">📭 No pending submissions for this report.</div>';document.getElementById('subOv').classList.add('show');return;}
+  var h='';
+  pendingSubs.forEach(function(s,i){
+    var dt=new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    h+='<div class="sub-item" id="si_'+s.id+'">';
+    h+='<div class="sub-item-hdr"><span class="sub-item-sec">'+escH(s.sectionTitle||s.section)+'</span><span class="sub-item-by">by '+escH(s.submitter)+'</span><span class="sub-item-period">'+escH(s.period)+'</span><span class="sub-item-date">'+dt+'</span></div>';
+    /* Data preview */
+    h+='<div class="sub-item-data">';
+    if(s.data){
+      h+='<table class="sub-data-tbl">';
+      Object.keys(s.data).forEach(function(k){
+        if(k.startsWith('_rows_'))return;
+        var v=s.data[k];
+        if(v)h+='<tr><td>'+escH(k)+'</td><td>'+escH(v)+'</td></tr>';
+      });
+      h+='</table>';
+      /* Row data */
+      Object.keys(s.data).forEach(function(k){
+        if(!k.startsWith('_rows_'))return;
+        var rows=s.data[k];
+        if(!rows||!rows.length)return;
+        h+='<div class="sub-data-rows"><div class="sub-data-rows-title">'+escH(k.replace('_rows_',''))+'</div><table class="sub-data-row-tbl">';
+        rows.forEach(function(r){h+='<tr>';r.forEach(function(c){h+='<td>'+escH(c)+'</td>';});h+='</tr>';});
+        h+='</table></div>';
+      });
+    }
+    h+='</div>';
+    if(s.notes)h+='<div class="sub-item-notes">"'+escH(s.notes)+'"</div>';
+    h+='<div class="sub-item-actions"><button class="sub-act-btn approve" onclick="approveSub('+s.id+')">✅ Approve & Import</button><button class="sub-act-btn reject" onclick="rejectSub('+s.id+')">❌ Reject</button></div>';
+    h+='</div>';
+  });
+  body.innerHTML=h;
+  document.getElementById('subOv').classList.add('show');
+}
+function closeSubs(){document.getElementById('subOv').classList.remove('show');}
+function escH(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+async function approveSub(id){
+  var sub=pendingSubs.find(function(s){return s.id===id;});
+  if(!sub)return;
+  modal({icon:'✅',title:'Approve submission?',msg:'Data from <b>'+escH(sub.submitter)+'</b> ('+escH(sub.sectionTitle)+') will be imported into the current report. You can review and adjust values after import.',okText:'Approve & Import',cls:'confirm',onOk:async function(){
+    /* Import data into current form */
+    if(sub.data){
+      Object.keys(sub.data).forEach(function(k){
+        if(k.startsWith('_rows_'))return;
+        var el=document.getElementById(k);
+        if(el)el.value=sub.data[k];
+      });
+    }
+    /* Mark as approved and delete from submissions */
+    var sl=gSlug();
+    await fbD('/games/'+sl+'/submissions/sub_'+id);
+    pendingSubs=pendingSubs.filter(function(s){return s.id!==id;});
+    updSubBadge();
+    /* Remove from panel */
+    var si=document.getElementById('si_'+id);
+    if(si)si.remove();
+    if(!pendingSubs.length)document.getElementById('subBody').innerHTML='<div class="sub-empty">📭 All submissions reviewed!</div>';
+    /* Save form */
+    if(U.m==='cur')U.C=uSnap();else U.P=uSnap();cAD();uMd();
+    toast('Imported '+sub.sectionTitle+' from '+sub.submitter);
+  }});
+}
+async function rejectSub(id){
+  var sub=pendingSubs.find(function(s){return s.id===id;});
+  if(!sub)return;
+  modal({icon:'❌',title:'Reject submission?',msg:'This will permanently delete the submission from <b>'+escH(sub.submitter)+'</b>.',okText:'Reject',cls:'danger',onOk:async function(){
+    var sl=gSlug();
+    await fbD('/games/'+sl+'/submissions/sub_'+id);
+    pendingSubs=pendingSubs.filter(function(s){return s.id!==id;});
+    updSubBadge();
+    var si=document.getElementById('si_'+id);
+    if(si)si.remove();
+    if(!pendingSubs.length)document.getElementById('subBody').innerHTML='<div class="sub-empty">📭 All submissions reviewed!</div>';
+    toast('Rejected');
+  }});
+}
+
+document.getElementById('subOv').addEventListener('click',function(e){if(e.target===this)closeSubs();});
+
 /* ═══ REPORT-SPECIFIC HTML GENERATORS ═══ */
 function rptHeader(){var g=curGame,rt=RTYPES.find(function(r){return r.id===curRpt;});var rtN=rt?rt.n:'Report';return'<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:16px;border-bottom:2px solid #e8eaed;margin-bottom:20px;flex-wrap:wrap;gap:12px;"><div><div style="font-size:20px;font-weight:800;">'+g.name+'</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">'+rtN+' — Data Input</div></div><div class="ua-badge cur" id="uBdg">● Current period</div></div>';}
-function rptBar(){return'<div class="ua-bar"><div class="ua-bar-left"><span class="sdot ok" id="uDot"></span><span id="uLbl">Saved</span></div><div class="ua-bar-right"><button class="ua-btn mode" id="uMode">✏️ Switch to Previous</button><button class="ua-btn" id="uSave">💾 Save</button><button class="ua-btn danger" id="uClr">🗑 Clear</button></div></div>';}
+function rptBar(){return'<div class="ua-bar"><div class="ua-bar-left"><span class="sdot ok" id="uDot"></span><span id="uLbl">Saved</span></div><div class="ua-bar-right"><button class="ua-btn inbox" id="uSubBtn" style="display:none;" onclick="openSubs()">📩 Submissions</button><button class="ua-btn mode" id="uMode">✏️ Switch to Previous</button><button class="ua-btn" id="uSave">💾 Save</button><button class="ua-btn danger" id="uClr">🗑 Clear</button></div></div>';}
 function rptVH(){return'<div class="vb"><div class="vsr"><input type="text" id="vhI" placeholder="Version tag (e.g. Mar 2026)"><button class="vsb" id="vhS">💾 Save Version</button></div><div class="vtg" id="vhT"><div class="vtl">📦 Versions <span class="vtc" id="vhC">0</span></div><span class="vta" id="vhA">▼</span></div><div class="vbd" id="vhB"><div id="vhL"></div></div></div>';}
 function rptMeta(){return'<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#6b7280;">A</span>Report metadata</div><div class="ua-mg"><div><div class="ua-fl">Period</div><input type="text" id="meta_period" placeholder="e.g. 1 Mar – 31 Mar 2026"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><div class="ua-fl">Scope</div><input type="text" id="meta_scope" value="Global + United States"></div><div><div class="ua-fl">Versions</div><input type="text" id="meta_versions" placeholder="e.g. v6.7"></div></div></div></div>';}
 function rptNotes(){return'<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#6b7280;">N</span>Notes</div><textarea id="ua_notes" placeholder="Notes, observations, next steps…"></textarea></div>';}
@@ -167,75 +298,47 @@ function rptGenBtn(){return'<div style="display:flex;gap:12px;margin-top:12px;fl
 /* REVENUE REPORT HTML */
 function revHTML(){
 var h='<div class="ua-page" id="UP">'+rptHeader()+rptBar()+rptVH()+rptMeta();
-/* Revenue by source */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#059669;">B</span>Revenue by source</div><table><thead><tr><th style="width:180px;">Stream</th><th class="cc">Amount</th><th class="cc">%</th></tr></thead><tbody><tr><td>IAP</td><td>'+dv('rv_i',120)+'</td><td><input type="text" id="rv_ip" style="width:60px;"></td></tr><tr><td>Ads</td><td>'+dv('rv_a',120)+'</td><td><input type="text" id="rv_ap" style="width:60px;"></td></tr><tr><td>Subs</td><td>'+dv('rv_s',120)+'</td><td><input type="text" id="rv_sp" style="width:60px;"></td></tr><tr><td style="font-weight:800;">Total</td><td>'+dv('rv_t',120)+'</td><td><input type="text" value="100%" readonly style="width:60px;background:#f3f4f6;pointer-events:none;"></td></tr></tbody></table></div>';
-/* Ad breakdown */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#b45309;">C</span>Ad breakdown</div><table><thead><tr><th style="width:150px;">Format</th><th class="cc">Revenue</th><th class="cc">Impressions</th><th class="cc">eCPM</th><th class="cc">Fill %</th></tr></thead><tbody>';
 [['Rewarded','rw'],['Interstitial','it'],['Banner','bn']].forEach(function(x){h+='<tr><td>'+x[0]+'</td><td>'+dv(x[1]+'_r',85)+'</td><td>'+dv(x[1]+'_i',85)+'</td><td><input type="text" id="'+x[1]+'_e" style="width:75px;"></td><td><input type="text" id="'+x[1]+'_f" style="width:65px;"></td></tr>';});
 h+='</tbody></table></div>';
-/* IAP packages */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#3b5bdb;">D</span>IAP packages</div><div class="tw"><table style="min-width:600px;"><thead><tr><th style="width:28px;">#</th><th style="width:170px;">Package</th><th class="cc">Price</th><th class="cc">Purchases</th><th class="cc">Revenue</th><th class="cc">% IAP</th><th style="width:28px;"></th></tr></thead><tbody id="iB"></tbody></table></div><div class="ra"><button class="ab" id="aIP">＋ Add</button><button class="rb" id="rIP">− Remove</button></div></div>';
-/* Monetization */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#7c3aed;">E</span>Monetization</div><div class="rg">';
 [['ARPU','m_ar'],['ARPPU','m_ap'],['Paying %','m_pp'],['Avg trans','m_at'],['Trans/user','m_tu'],['UA cost','m_uc'],['CPU','m_cp'],['ROAS','m_ro'],['Target','m_tg']].forEach(function(x){h+='<div><div class="ua-fl">'+x[0]+'</div><input type="text" id="'+x[1]+'"></div>';});
 h+='</div></div><div class="ud"></div>';
-/* Top countries */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#3b5bdb;">F</span>Top countries (revenue)</div><div class="tw"><table style="min-width:700px;"><thead><tr><th style="width:28px;">#</th><th style="width:120px;">Country</th><th class="cc">Revenue</th><th class="cc">IAP</th><th class="cc">Ads</th><th class="cc">ARPU</th><th class="cc">Paying %</th><th style="width:28px;"></th></tr></thead><tbody id="cB"></tbody></table></div><div class="ra"><button class="ab" id="aCR">＋ Add</button><button class="rb" id="rCR">− Remove</button></div></div><div class="ud"></div>';
-h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';
-return h;
-}
+h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';return h;}
 function revAddCR(){U.cC++;var n=U.cC;document.getElementById('cB').insertAdjacentHTML('beforeend','<tr id="cr_'+n+'"><td style="font-weight:800;color:#3b5bdb;text-align:center;">'+n+'</td><td><select class="ddc" style="width:110px;">'+cOpt()+'</select></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:62px;"></td><td><input type="text" style="width:62px;"></td><td><button class="db" onclick="dr(\'cr_'+n+'\',\'cB\',\'rCR\',1)">✕</button></td></tr>');ub('rCR','cB');uMd();}
 function revSeed(){for(var i=0;i<5;i++)revAddCR();for(var j=0;j<3;j++){addIR();addAR();}}
-function revBind(){
-document.getElementById('aCR').addEventListener('click',revAddCR);document.getElementById('rCR').addEventListener('click',function(){rl('cB','rCR',1);});
-document.getElementById('aIP').addEventListener('click',addIR);document.getElementById('rIP').addEventListener('click',function(){rl('iB','rIP',1);});
-document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
+function revBind(){document.getElementById('aCR').addEventListener('click',revAddCR);document.getElementById('rCR').addEventListener('click',function(){rl('cB','rCR',1);});document.getElementById('aIP').addEventListener('click',addIR);document.getElementById('rIP').addEventListener('click',function(){rl('iB','rIP',1);});document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
 
 /* ASO REPORT HTML */
 function asoHTML(){
 var h='<div class="ua-page" id="UP">'+rptHeader()+rptBar()+rptVH()+rptMeta();
-/* Store listing */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#3b5bdb;">B</span>Store listing</div><div class="tw"><table style="min-width:650px;"><thead><tr><th style="width:130px;">Country</th><th style="background:#eef2ff;color:#3b5bdb;">Visitors</th><th style="background:#ecfdf5;color:#059669;">Acq.</th><th style="background:#fefce8;color:#92400e;">CVR %</th><th style="background:#f5f3ff;color:#6b21a8;">vs Peers</th><th style="width:28px;"></th></tr></thead><tbody id="tB"></tbody></table></div><div class="ra"><button class="ab" id="aTR">＋ Add</button><button class="rb" id="rTR" disabled>− Remove</button></div></div>';
-/* Keywords */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#6b21a8;">C</span>Keywords</div><div class="tw"><table style="min-width:650px;"><thead><tr><th style="width:28px;">#</th><th style="width:160px;">Keyword</th><th style="background:#f5f3ff;color:#6b21a8;">Rank</th><th style="background:#f5f3ff;color:#6b21a8;">Vol.</th><th style="background:#f5f3ff;color:#6b21a8;">Installs</th><th style="background:#f5f3ff;color:#6b21a8;">CVR</th><th style="background:#f5f3ff;color:#6b21a8;">Rank Δ</th><th style="width:28px;"></th></tr></thead><tbody id="kB"></tbody></table></div><div class="ra"><button class="ab" id="aKW">＋ Add</button><button class="rb" id="rKW">− Remove</button></div></div><div class="ud"></div>';
-/* Ratings & reviews */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#dc2626;">D</span>Ratings & reviews</div><div class="ua-mg"><div><div class="ua-fl">Overall rating</div>'+dv('rt_rating',120)+'</div><div><div class="ua-fl">Total reviews</div>'+dv('rt_total',120)+'</div><div><div class="ua-fl">New reviews (period)</div>'+dv('rt_new',120)+'</div><div><div class="ua-fl">Avg review score</div>'+dv('rt_avg',120)+'</div></div><div class="tw" style="margin-top:14px;"><table style="min-width:500px;"><thead><tr><th style="width:80px;">Stars</th><th style="background:#fef0f0;color:#dc2626;">Count</th><th style="background:#fef0f0;color:#dc2626;">% of total</th><th style="background:#fef0f0;color:#dc2626;">Change</th></tr></thead><tbody>';
 [5,4,3,2,1].forEach(function(s){h+='<tr><td style="font-weight:700;">'+s+' ★</td><td><input type="text" id="rt_s'+s+'_c" style="width:80px;"></td><td><input type="text" id="rt_s'+s+'_p" style="width:70px;"></td><td><input type="text" id="rt_s'+s+'_d" style="width:70px;"></td></tr>';});
 h+='</tbody></table></div></div><div class="ud"></div>';
-/* Top countries */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#3b5bdb;">E</span>Top countries (store)</div><div class="tw"><table style="min-width:700px;"><thead><tr><th style="width:28px;">#</th><th style="width:120px;">Country</th><th class="cc">Visitors</th><th class="cc">Installs</th><th class="cc">CVR</th><th class="cc">Rating</th><th style="width:28px;"></th></tr></thead><tbody id="cB"></tbody></table></div><div class="ra"><button class="ab" id="aCR">＋ Add</button><button class="rb" id="rCR">− Remove</button></div></div><div class="ud"></div>';
-h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';
-return h;
-}
+h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';return h;}
 function asoAddCR(){U.cC++;var n=U.cC;document.getElementById('cB').insertAdjacentHTML('beforeend','<tr id="cr_'+n+'"><td style="font-weight:800;color:#3b5bdb;text-align:center;">'+n+'</td><td><select class="ddc" style="width:110px;">'+cOpt()+'</select></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:62px;"></td><td><input type="text" style="width:62px;"></td><td><button class="db" onclick="dr(\'cr_'+n+'\',\'cB\',\'rCR\',1)">✕</button></td></tr>');ub('rCR','cB');uMd();}
 function asoSeed(){seedStAll();for(var i=0;i<5;i++)asoAddCR();for(var j=0;j<5;j++)addKR();for(var k=0;k<3;k++)addAR();}
-function asoBind(){
-document.getElementById('aTR').addEventListener('click',addTR);document.getElementById('rTR').addEventListener('click',function(){rlp('tB','sl_','rTR');});
-document.getElementById('aKW').addEventListener('click',addKR);document.getElementById('rKW').addEventListener('click',function(){rl('kB','rKW',1);});
-document.getElementById('aCR').addEventListener('click',asoAddCR);document.getElementById('rCR').addEventListener('click',function(){rl('cB','rCR',1);});
-document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
+function asoBind(){document.getElementById('aTR').addEventListener('click',addTR);document.getElementById('rTR').addEventListener('click',function(){rlp('tB','sl_','rTR');});document.getElementById('aKW').addEventListener('click',addKR);document.getElementById('rKW').addEventListener('click',function(){rl('kB','rKW',1);});document.getElementById('aCR').addEventListener('click',asoAddCR);document.getElementById('rCR').addEventListener('click',function(){rl('cB','rCR',1);});document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
 
 /* PLAY CONSOLE REPORT HTML */
 function conHTML(){
 var h='<div class="ua-page" id="UP">'+rptHeader()+rptBar()+rptVH()+rptMeta();
-/* Stability */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#dc2626;">B</span>Stability (per version)</div><div class="tw"><table style="min-width:720px;"><thead><tr><th style="width:100px;">Version</th><th class="cc">Crash rate</th><th class="cc">ANR rate</th><th class="cc">Sessions</th><th class="cc">Affected users</th><th class="cc">Status</th><th style="width:28px;"></th></tr></thead><tbody id="sB"></tbody></table></div><div class="ra"><button class="ab" id="aST">＋ Add</button><button class="rb" id="rST">− Remove</button></div></div><div class="ud"></div>';
-/* Ratings & reviews */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#b45309;">C</span>Ratings & reviews</div><div class="ua-mg"><div><div class="ua-fl">Overall rating</div>'+dv('rt_rating',120)+'</div><div><div class="ua-fl">Total reviews</div>'+dv('rt_total',120)+'</div><div><div class="ua-fl">New reviews (period)</div>'+dv('rt_new',120)+'</div><div><div class="ua-fl">Reply rate %</div>'+dv('rt_reply',120)+'</div></div></div><div class="ud"></div>';
-/* Version changelog */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#7c3aed;">D</span>Version changelog</div><div class="tw"><table style="min-width:600px;"><thead><tr><th style="width:100px;">Version</th><th style="width:100px;">Release date</th><th>Changes / notes</th><th style="width:28px;"></th></tr></thead><tbody id="kB"></tbody></table></div><div class="ra"><button class="ab" id="aKW">＋ Add</button><button class="rb" id="rKW">− Remove</button></div></div><div class="ud"></div>';
-h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';
-return h;
-}
+h+=rptActions()+rptNotes()+rptGenBtn()+'</div>';return h;}
 function conAddSR(){U.sC++;var n=U.sC;document.getElementById('sB').insertAdjacentHTML('beforeend','<tr id="stb_'+n+'"><td><input type="text" style="width:88px;font-weight:700;"></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:70px;"></td><td><input type="text" style="width:80px;"></td><td><input type="text" style="width:80px;"></td><td><select style="width:80px;"><option>Stable</option><option>Warning</option><option>Critical</option></select></td><td><button class="db" onclick="dr(\'stb_'+n+'\',\'sB\',\'rST\')">✕</button></td></tr>');ub('rST','sB');uMd();}
 function conAddVR(){U.kC++;var n=U.kC;document.getElementById('kB').insertAdjacentHTML('beforeend','<tr id="kw_'+n+'"><td><input type="text" style="width:88px;font-weight:700;"></td><td><input type="text" style="width:88px;"></td><td><input type="text" style="width:100%;text-align:left;"></td><td><button class="db" onclick="dr(\'kw_'+n+'\',\'kB\',\'rKW\')">✕</button></td></tr>');ub('rKW','kB');uMd();}
 function conSeed(){for(var i=0;i<3;i++){conAddSR();conAddVR();addAR();}}
-function conBind(){
-document.getElementById('aST').addEventListener('click',conAddSR);document.getElementById('rST').addEventListener('click',function(){rl('sB','rST');});
-document.getElementById('aKW').addEventListener('click',conAddVR);document.getElementById('rKW').addEventListener('click',function(){rl('kB','rKW');});
-document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
+function conBind(){document.getElementById('aST').addEventListener('click',conAddSR);document.getElementById('rST').addEventListener('click',function(){rl('sB','rST');});document.getElementById('aKW').addEventListener('click',conAddVR);document.getElementById('rKW').addEventListener('click',function(){rl('kB','rKW');});document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});}
 
-/* ═══ UA REPORT ═══ */
+/* ═══ UA REPORT (main) ═══ */
 var U={C:{},P:{},m:'cur',gid:0,cC:0,sC:0,kC:0,iC:0,aC:0,rC:0,tC:0,dt:false,st:null};
 var UC={countries:['United States','Germany','United Kingdom','France','Japan','Canada','Italy','South Korea','Australia'],sources:['Google Ads','Unity Ads','Apple Ads','AppLovin','Facebook Ads'],campaigns:{'Google Ads':['USA ROAS Max Conv','Top Countries ROAS','World ROAS 45%'],'Unity Ads':['Install 125 USA'],'Facebook Ads':['Top Countries 25'],'Apple Ads':[],'AppLovin':[]},platforms:['Android','iPhone','Both']};
 var CG='<colgroup><col style="width:160px"><col style="width:62px"><col style="width:62px"><col style="width:62px"><col style="width:56px"><col style="width:52px"><col style="width:52px"><col style="width:56px"><col style="width:56px"><col style="width:56px"><col style="width:28px"></colgroup>';
@@ -253,9 +356,8 @@ else{el.innerHTML=uaHTML();uaBind();uaSeed();uaLoad();}}
 function uaHTML(){
 var g=curGame,h='<div class="ua-page" id="UP">';
 h+=rptHeader();
-h+='<div class="ua-bar"><div class="ua-bar-left"><span class="sdot ok" id="uDot"></span><span id="uLbl">Saved</span></div><div class="ua-bar-right"><button class="ua-btn mode" id="uMode">✏️ Switch to Previous</button><button class="ua-btn" id="uSave">💾 Save</button><button class="ua-btn danger" id="uClr">🗑 Clear</button><button class="ua-btn" style="border-color:#c4b5fd;color:#7c3aed;background:#f5f3ff;" id="uDemo">🧪 Demo</button></div></div>';
-/* VH */
-h+='<div class="vb"><div class="vsr"><input type="text" id="vhI" placeholder="Version tag (e.g. Mar 2026)"><button class="vsb" id="vhS">💾 Save Version</button></div><div class="vtg" id="vhT"><div class="vtl">📦 Versions <span class="vtc" id="vhC">0</span></div><span class="vta" id="vhA">▼</span></div><div class="vbd" id="vhB"><div id="vhL"></div></div></div>';
+h+='<div class="ua-bar"><div class="ua-bar-left"><span class="sdot ok" id="uDot"></span><span id="uLbl">Saved</span></div><div class="ua-bar-right"><button class="ua-btn inbox" id="uSubBtn" style="display:none;" onclick="openSubs()">📩 Submissions</button><button class="ua-btn mode" id="uMode">✏️ Switch to Previous</button><button class="ua-btn" id="uSave">💾 Save</button><button class="ua-btn danger" id="uClr">🗑 Clear</button><button class="ua-btn" style="border-color:#c4b5fd;color:#7c3aed;background:#f5f3ff;" id="uDemo">🧪 Demo</button></div></div>';
+h+=rptVH();
 /* A */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#6b7280;">A</span>Report metadata</div><div class="ua-mg"><div><div class="ua-fl">Period</div><input type="text" id="meta_period" placeholder="e.g. 1 Mar – 31 Mar 2026"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><div class="ua-fl">Scope</div><input type="text" id="meta_scope" value="Global + United States"></div><div><div class="ua-fl">Versions</div><input type="text" id="meta_versions" placeholder="e.g. v6.7"></div></div></div></div>';
 /* B */
@@ -291,9 +393,8 @@ h+='<div class="ua-sub" style="background:#eef2ff;color:#3b5bdb;margin-top:22px;
 h+='<div class="ua-sub" style="background:#f5f3ff;color:#6b21a8;margin-top:22px;">Monetization</div><div class="rg">';
 [['ARPU','m_ar'],['ARPPU','m_ap'],['Paying %','m_pp'],['Avg trans','m_at'],['Trans/user','m_tu'],['UA cost','m_uc'],['CPU','m_cp'],['ROAS','m_ro'],['Target','m_tg']].forEach(function(x){h+='<div><div class="ua-fl">'+x[0]+'</div><input type="text" id="'+x[1]+'"></div>';});
 h+='</div></div><div class="ud"></div>';
-/* K */
+/* K+L */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#b45309;">K</span>Actions</div><div class="tw"><table style="min-width:760px;"><thead><tr><th style="width:28px;">#</th><th style="width:250px;">Action</th><th style="width:110px;">Owner</th><th class="cc">Priority</th><th class="cc">Status</th><th class="cc">Due</th><th style="width:28px;"></th></tr></thead><tbody id="aB"></tbody></table></div><div class="ra"><button class="ab" id="aAC">＋ Add</button><button class="rb" id="rAC">− Remove</button></div></div>';
-/* L */
 h+='<div class="ua-sec"><div class="ua-sec-t"><span class="ua-sec-icon" style="background:#6b7280;">L</span>Notes</div><textarea id="ua_notes" placeholder="Budget, campaigns, ASO…"></textarea></div>';
 h+='<div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;"><button class="ua-btn" style="flex:1;min-width:200px;padding:14px;background:linear-gradient(135deg,#3b5bdb,#364fc7);color:#fff;border:none;font-size:14px;font-weight:700;border-radius:10px;" id="uGen">📋 Generate Output</button></div>';
 h+='<div class="ow" id="uOW"><div class="oh"><span>Output</span><button id="uCp">Copy</button></div><textarea id="uOA" readonly style="width:100%;min-height:300px;padding:16px;border:none;font-size:11px;font-family:monospace;line-height:1.8;background:#f8f9fc;resize:vertical;"></textarea></div>';
@@ -347,7 +448,7 @@ function restAG(groups){var ab=document.getElementById('adB');if(!ab)return;ab.i
 function uMd(){U.dt=true;var d=document.getElementById('uDot'),l=document.getElementById('uLbl');if(d)d.className='sdot un';if(l)l.textContent='Unsaved';clearTimeout(U.st);U.st=setTimeout(uAS,4000);}
 function uMs(){U.dt=false;var d=document.getElementById('uDot'),l=document.getElementById('uLbl');if(d)d.className='sdot ok';if(l)l.textContent='Saved';}
 async function uAS(){var d=document.getElementById('uDot'),l=document.getElementById('uLbl');if(d)d.className='sdot sv';if(l)l.textContent='Saving…';try{if(U.m==='cur')U.C=uSnap();else U.P=uSnap();var ok=await fbS(uP()+'/data',{cfg:UC,cur:U.C,prev:U.P,mode:U.m});if(ok)uMs();else{if(d)d.className='sdot un';if(l)l.textContent='Error';}}catch(e){console.log('Save err:',e);}}
-async function uaLoad(){try{var d=await fbG(uP()+'/data');if(!d)return;if(d.cfg)UC=d.cfg;if(d.cur)U.C=d.cur;if(d.prev)U.P=d.prev;if(U.C._d){['cB','sB','kB','iB','aB'].forEach(function(t){var el=document.getElementById(t);if(el)el.innerHTML='';});document.getElementById('rB').querySelectorAll('tr[id^="ret_"]').forEach(function(r){r.remove();});document.getElementById('tB').querySelectorAll('tr[id^="sl_"]').forEach(function(r){r.remove();});U.cC=0;U.sC=0;U.kC=0;U.iC=0;U.aC=0;U.rC=0;U.tC=0;var m={cB:addCR,sB:addSR,kB:addKR,iB:addIR,aB:addAR};Object.keys(m).forEach(function(t){(U.C._d[t]||[]).forEach(function(row){m[t]();var el=document.getElementById(t);if(!el)return;var els=el.lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});});(U.C._d['ret_r']||[]).forEach(function(row){addRR();var els=document.getElementById('rB').lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});(U.C._d['sl_r']||[]).forEach(function(row){addTR();var els=document.getElementById('tB').lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});rn('cB');rn('kB');rn('iB');rn('aB');}if(U.C._ag)restAG(U.C._ag);uRest(U.C);xRender();rfSP();if(d.mode==='prev')swM('prev');cAD();uMs();}catch(e){console.log('Load err:',e);}}
+async function uaLoad(){try{var d=await fbG(uP()+'/data');if(!d){loadSubs();return;}if(d.cfg)UC=d.cfg;if(d.cur)U.C=d.cur;if(d.prev)U.P=d.prev;if(U.C._d){['cB','sB','kB','iB','aB'].forEach(function(t){var el=document.getElementById(t);if(el)el.innerHTML='';});var rb2=document.getElementById('rB');if(rb2)rb2.querySelectorAll('tr[id^="ret_"]').forEach(function(r){r.remove();});var tb2=document.getElementById('tB');if(tb2)tb2.querySelectorAll('tr[id^="sl_"]').forEach(function(r){r.remove();});U.cC=0;U.sC=0;U.kC=0;U.iC=0;U.aC=0;U.rC=0;U.tC=0;var m={cB:addCR,sB:addSR,kB:addKR,iB:addIR,aB:addAR};Object.keys(m).forEach(function(t){(U.C._d[t]||[]).forEach(function(row){m[t]();var el=document.getElementById(t);if(!el)return;var els=el.lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});});(U.C._d['ret_r']||[]).forEach(function(row){addRR();var els=document.getElementById('rB').lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});(U.C._d['sl_r']||[]).forEach(function(row){addTR();var els=document.getElementById('tB').lastElementChild.querySelectorAll('select,input');row.forEach(function(v,j){if(els[j])els[j].value=v;});});rn('cB');rn('kB');rn('iB');rn('aB');}if(U.C._ag)restAG(U.C._ag);uRest(U.C);xRender();rfSP();if(d.mode==='prev')swM('prev');cAD();uMs();loadSubs();}catch(e){console.log('Load err:',e);}}
 
 /* CONFIG */
 function xRender(){xRcfg('countries');xRcfg('sources');xRcfg('platforms');xRcamp();xRcs();rfSP();}
@@ -379,25 +480,23 @@ function vhDoSave(tag,oi){if(U.m==='cur')U.C=uSnap();else U.P=uSnap();var snap={
 function vhRes(id){var v=null;for(var i=0;i<VH.length;i++){if(VH[i].id===id){v=VH[i];break;}}if(!v)return;modal({icon:'↩',title:'Restore "'+v.tag+'"?',msg:'Replace current data?',okText:'Restore',cls:'confirm',onOk:function(){if(v.data.cur){U.C=JSON.parse(JSON.stringify(v.data.cur));U.P=JSON.parse(JSON.stringify(v.data.prev||{}));}else{U.C=JSON.parse(JSON.stringify(v.data));U.P={};}if(U.m==='prev')swM('cur');else uRestFull(U.C);cAD();uMd();toast('Restored!');}});}
 function vhDel(id){var v=null;for(var i=0;i<VH.length;i++){if(VH[i].id===id){v=VH[i];break;}}if(!v)return;modal({icon:'🗑',title:'Delete "'+v.tag+'"?',msg:'Permanently remove?',okText:'Delete',cls:'danger',onOk:function(){VH=VH.filter(function(x){return x.id!==id;});vhP();vhR();toast('Deleted');}});}
 
-/* COMMON BIND (shared by all report types) */
+/* COMMON BIND */
 function uaBindCommon(){
 document.getElementById('uMode').addEventListener('click',function(){swM(U.m==='cur'?'prev':'cur');});
 document.getElementById('uSave').addEventListener('click',uAS);
 document.getElementById('uClr').addEventListener('click',function(){modal({icon:'🗑',title:'Clear All?',msg:'Erase all data permanently.',okText:'Clear',cls:'danger',onOk:function(){U.C={};U.P={};document.querySelectorAll('#UP input[type="text"]').forEach(function(e){if(e.id!=='meta_scope'&&e.id!=='vhI'&&!e.readOnly)e.value='';});document.querySelectorAll('#UP textarea').forEach(function(e){if(e.id!=='uOA')e.value='';});document.querySelectorAll('#UP select').forEach(function(e){if(!e.closest('.vb')&&!e.closest('.car'))e.selectedIndex=0;});document.querySelectorAll('#UP .delta').forEach(function(e){e.className='delta flat';e.textContent='';});var ab=document.getElementById('adB');if(ab)ab.innerHTML='';U.gid=0;if(U.m==='prev')swM('cur');fbD(uP()+'/data');uMd();toast('Cleared');}});});
 document.getElementById('uGen').addEventListener('click',uaGen);
 document.getElementById('uCp').addEventListener('click',function(){var e=document.getElementById('uOA');e.select();try{document.execCommand('copy');}catch(e){}});
-/* VH */
 document.getElementById('vhS').addEventListener('click',vhSave);
 document.getElementById('vhI').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();vhSave();}});
 document.getElementById('vhT').addEventListener('click',function(){VHO=!VHO;var vb=document.getElementById('vhB');if(vb)vb.classList.toggle('open',VHO);var va=document.getElementById('vhA');if(va)va.classList.toggle('open',VHO);});
 document.getElementById('vhL').addEventListener('click',function(e){var btn=e.target.closest('[data-va]');if(!btn)return;var a=btn.getAttribute('data-va'),id=parseInt(btn.getAttribute('data-vi'),10);if(a==='res')vhRes(id);else if(a==='del')vhDel(id);});
 vhLoad();
-/* Global input/change */
 document.addEventListener('input',function(e){if(!document.getElementById('UP'))return;if(e.target.closest('#UP')&&e.target.id!=='uOA'&&e.target.id!=='vhI'&&!e.target.closest('.car')&&!e.target.closest('.vb')){if(U.m==='cur')U.C=uSnap();else U.P=uSnap();document.querySelectorAll('#UP .dv').forEach(function(el){if(el.id)cD(el.id);});uMd();}});
 document.addEventListener('change',function(e){if(!document.getElementById('UP'))return;if(e.target.closest('#UP')&&e.target.tagName==='SELECT'&&!e.target.closest('.car')&&!e.target.closest('.vb'))uMd();});
 }
 
-/* BIND (UA-specific — adds common + UA-only bindings) */
+/* UA BIND */
 function uaBind(){
 uaBindCommon();
 document.getElementById('uDemo').addEventListener('click',function(){modal({icon:'🧪',title:'Fill Demo?',msg:'Populate with sample data.',okText:'Fill',cls:'demo',onOk:function(){
@@ -412,8 +511,6 @@ document.getElementById('aTR').addEventListener('click',addTR);document.getEleme
 document.getElementById('aKW').addEventListener('click',addKR);document.getElementById('rKW').addEventListener('click',function(){rl('kB','rKW',1);});
 document.getElementById('aIP').addEventListener('click',addIR);document.getElementById('rIP').addEventListener('click',function(){rl('iB','rIP',1);});
 document.getElementById('aAC').addEventListener('click',addAR);document.getElementById('rAC').addEventListener('click',function(){rl('aB','rAC',1);});
-document.getElementById('uGen').addEventListener('click',uaGen);
-document.getElementById('uCp').addEventListener('click',function(){var e=document.getElementById('uOA');e.select();try{document.execCommand('copy');}catch(e){}});
 document.getElementById('xCB').addEventListener('click',function(){xAcfg('countries');});document.getElementById('xCI').addEventListener('keydown',function(e){if(e.key==='Enter')xAcfg('countries');});
 document.getElementById('xSB').addEventListener('click',function(){xAcfg('sources');});document.getElementById('xSI').addEventListener('keydown',function(e){if(e.key==='Enter')xAcfg('sources');});
 document.getElementById('xLB').addEventListener('click',function(){xAcfg('platforms');});document.getElementById('xLI').addEventListener('keydown',function(e){if(e.key==='Enter')xAcfg('platforms');});
